@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "Package: CountClust\nType: Package\nTitle: Clustering and Visualizing RNA-Seq Expression Data using Grade\n        of Membership Models\nVersion: 1.2.0\nDate: 2016-03-13\nAuthors@R: c( person(\"Kushal\", \"Dey\", email = \"kkdey@uchicago.edu\",\n        role = c(\"aut\",\"cre\")), person(\"Joyce\", \"Hsiao\", email =\n        \"joyce.hsiao1@gmail.com\", role = \"aut\"), person(\"Matthew\",\n        \"Stephens\", email = \"stephens999@gmail.com\", role =\"aut\"))\nMaintainer: Kushal Dey <kkdey@uchicago.edu>\nDescription: Fits grade of membership models (GoM, also known as\n        admixture models) to cluster RNA-seq gene expression count\n        data, identifies characteristic genes driving cluster\n        memberships, and provides a visual summary of the cluster\n        memberships.\nDepends: R (>= 3.3.0), ggplot2 (>= 2.1.0)\nURL: https://github.com/kkdey/CountClust\nLicense: GPL (>= 2)\nLazyData: true\nEncoding: UTF-8\nImports: maptpx, slam, plyr(>= 1.7.1), cowplot, gtools, flexmix,\n        picante, limma, parallel, reshape2, stats, utils, graphics,\n        grDevices\nSuggests: knitr, BiocStyle, Biobase, roxygen2, RColorBrewer, devtools,\n        xtable\nVignetteBuilder: knitr\nbiocViews: RNASeq, GeneExpression, Clustering, Sequencing,\n        StatisticalMethod, Software, Visualization\nRoxygenNote: 5.0.1\nNeedsCompilation: no\nAuthor: Kushal Dey [aut, cre], Joyce Hsiao [aut], Matthew Stephens\n        [aut]\n",
+    "created" : 1478397507460.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1643178986",
+    "id" : "7F5AE207",
+    "lastKnownWriteTime" : 1478397945,
+    "last_content_update" : 1478397945,
+    "path" : "~/Desktop/CountClust/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "dcf"
+}
