@@ -72,12 +72,6 @@ data("MouseDeng2014.FitGoM")
 # extract the omega matrix: membership weights of each cell
 names(MouseDeng2014.FitGoM$clust_6)
 omega <- MouseDeng2014.FitGoM$clust_6$omega
-tissue_label <- rownames(omega)
-
-# make annotation matrix
-annotation <- data.frame(
-  sample_id = paste0("X", c(1:NROW(omega))),
-  tissue_label = factor(rownames(omega),
 
 # make annotation matrix
 annotation <- data.frame(
@@ -88,7 +82,6 @@ tissue_label = factor(rownames(omega),
                                      "4cell", "8cell", "16cell",
                                      "earlyblast","midblast",
                                      "lateblast") ) ) )
-head(annotation)
 
 rownames(omega) <- annotation$sample_id;
 StructureGGplot(omega = omega,

@@ -46,10 +46,8 @@ FitGoM <- function(data,
 {
     ## dealing with blank rows: we first remove them
 
-
     control.default <- list(shape=NULL, initopics=NULL, bf=TRUE,
                             kill=2, ord=TRUE, verb=1, tmax=1000)
-
     namc=names(control)
     if (!all(namc %in% names(control.default)))
         stop("unknown names in control: ",

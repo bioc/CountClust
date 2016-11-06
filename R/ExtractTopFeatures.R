@@ -104,6 +104,7 @@ ExtractTopFeatures <- function(theta,
                   indices_mat[k,(flag:top_features)]=NA;
                   break
                 }
+
                 if(which.max(theta[ordered_kl[counter],])==k){
                     indices_mat[k, flag] <- ordered_kl[counter];
                     flag <- flag + 1;
