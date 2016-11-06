@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#' @title Grade of Membership (GoM) model fit !\n#'\n#' @description Fits a grade of membership model to count data. Default input\n#'                includes a sample-by-feature matrix, the number of clusters\n#'                (topics) to fit (K). The function is a wrapper of the topics()\n#'                function implemented in Matt Taddy's maptpx pacakge.\n#'\n#' @param data counts data \\eqn{N x G}, with \\eqn{N}, the number of samples\n#'       along the rows and \\eqn{G}, number of genes along columns.\n#' @param K the vector of clusters or topics to be fitted.\n#' @param tol Tolerance value for GoM model absolute log posterior increase\n#'            at successive iterations (set to 0.1 as default).\n#' @param path_rda The directory path for saving the GoM model output.\n#'                  If NULL, it will return the output to console.\n#' @param control Control parameters. Same as topics() function of\n#'                 maptpx package.\n#'\n#' @return Saves the GoM model fit output for each cluster in vector K at the\n#'                directory path in path_rda.\n#'\n#' @references Matt Taddy. On Estimation and Selection for Topic Models.\n#'                AISTATS 2012, JMLR W\\&CP 22.\n#'\n#'            Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly.\n#'                Inference of population structure using multilocus genotype\n#'                data. Genetics 155.2 (2000): 945-959.\n#'\n#' @keywords counts data, clustering, Structure plot\n#'\n#'\n#' @examples\n#'\n#' data(\"ex.counts\")\n#' out <- FitGoM(ex.counts, K=4, tol=100, control=list(tmax=100))\n#' @importFrom maptpx topics\n#' @import slam\n#' @importFrom utils modifyList\n#' @export\n\n\nFitGoM <- function(data,\n                   K,\n                   tol=0.1,\n                   path_rda = NULL,\n                   control=list())\n{\n    ## dealing with blank rows: we first remove them\n\n\n    control.default <- list(shape=NULL, initopics=NULL, bf=TRUE,\n                            kill=2, ord=TRUE, verb=1, tmax=1000)\n\n    namc=names(control)\n    if (!all(namc %in% names(control.default)))\n        stop(\"unknown names in control: \",\n             namc[!(namc %in% names(control.default))])\n    control=modifyList(control.default, control)\n\n\n\n    indices_blank <- as.numeric(which(apply(data,1,max) == 0))\n    if(length(indices_blank)!=0){\n        data <- as.matrix(data[-indices_blank,]);\n    }\n\n    message('Fitting the topic model (due to Matt Taddy)',\n            domain = NULL, appendLF = TRUE)\n\n    Topic_clus_list <- lapply(K, function(per_clust) {\n\n        suppressWarnings(out <- maptpx::topics(\n            as.matrix(data),\n            K = per_clust,\n            shape=control$shape,\n            initopics=control$initopics,\n            tol=tol,\n            bf=control$bf,\n            kill=control$kill,\n            ord=control$ord,\n            verb=control$verb,\n            tmax=control$tmax))\n        return(out)\n    })\n\n    names(Topic_clus_list) <- paste0(\"clust_\",K)\n    if(!is.null(path_rda)){\n        save(Topic_clus_list, file = path_rda);\n    }else{\n        return(Topic_clus_list)\n    }\n    #  if(plot) {\n    #  message('Creating the Structure plots', domain = NULL, appendLF = TRUE)\n    #  for(num in 1:length(nclus_vec))\n    #  {\n    #       StructureObj_omega(Topic_clus_list[[num]]$omega,samp_metadata,\n    #                          batch_lab, path_struct,\n    #                          partition=partition,\n    #                          control=control)\n    #  }}\n\n}\n",
+    "created" : 1478398907678.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1607986138",
+    "id" : "803B00E4",
+    "lastKnownWriteTime" : 1478400727,
+    "last_content_update" : 1478400727240,
+    "path" : "~/Desktop/CountClust/R/FitGoM.R",
+    "project_path" : "R/FitGoM.R",
+    "properties" : {
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

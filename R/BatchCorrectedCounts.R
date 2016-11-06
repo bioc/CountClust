@@ -18,7 +18,6 @@
 #' @keywords counts data, batch effect
 #'
 #' @examples
-#'
 #' # Simulation example
 #' N=500;
 #' K=4;
@@ -50,7 +49,6 @@
 #'
 #' batchcorrect_counts <- BatchCorrectedCounts(read_counts, Label.Batch,
 #'                                      use_parallel=FALSE)
-#'
 #' @importFrom gtools rdirichlet
 #' @importFrom  limma voom
 #' @importFrom parallel mclapply

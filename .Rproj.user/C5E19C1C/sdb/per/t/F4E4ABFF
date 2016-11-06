@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#' @title Extracting most highly correlated genes with GoM topics/clusters\n#'\n#' @description This function compares grades of membership profile for each\n#'  cluster in GoM model fit with the data expression profile to identify\n#'  genes that are mostly strongly associated with each topic.\n#'\n#'\n#' @param omega \\eqn{\\boldsymbol{omega}} matrix, the relative grades of memberships\n#'                from the GoM model fitting (a \\eqn{N x K} matrix where \\eqn{N} is\n#'                number of samples, \\eqn{K} number of topics).\n#' @param data \\eqn{G x N} matrix of the expression profile of genes across samples,\n#'              where \\eqn{G} is the number of features and \\eqn{N} number of samples\n#' @param num_genes The number of top associated genes with each cluster. Defaults to 100\n#'\n#' @return A list containing two items - a \\eqn{K x num_genes} matrix of the\n#'          top strongly associated/correlated indices/features for K clusters,\n#'          and another \\eqn{K x num_genes} matrix of the absolute values of the\n#'          correlations.\n#'\n#' @examples\n#'data(\"MouseDeng2014.FitGoM\")\n#' omega_mat <- MouseDeng2014.FitGoM$clust_6$omega;\n#' read.data1 = function() {\n#'     x = tempfile()\n#'    download.file('https://cdn.rawgit.com/kkdey/singleCellRNASeqMouseDeng2014/master/data/Deng2014MouseEsc.rda', destfile=x, quiet=TRUE)\n#'    z = get(load((x)))\n#'    return(z)\n#' }\n#' Deng2014MouseESC <- read.data1()\n#' deng.counts <- Biobase::exprs(Deng2014MouseESC)\n#' out <- ExtractHighCorFeatures(omega_mat, deng.counts, num_genes=10)\n#' @import  stats\n#' @export\n#'\n\n\n\nExtractHighCorFeatures <- function(omega,\n                                   data,\n                                   num_genes=100){\n    if(num_genes > dim(data)[1]){\n        stop(\"num genes must be less than the number of features in data\")\n    }\n\n    if(dim(data)[2] < dim(omega)[2]){\n        stop(\"number of samples must be greater than K\")\n    }\n\n    K <- dim(omega)[2]\n\n    indices <- matrix(0,K,num_genes)\n    cor_values <- matrix(0,K,num_genes)\n\n    for(k in 1:K){\n        abs_cor_genes <- array(0, dim(data)[1])\n        for(l in 1:dim(data)[1]){\n            if(stats::sd(data[l,])==0){ abs_cor_genes[l] <- 0}\n            else{abs_cor_genes[l] <- abs(cor(data[l,], omega[,k]))}\n        }\n        indices[k,] <- order(abs_cor_genes, decreasing=TRUE)[1:num_genes]\n        cor_values[k,] <- abs_cor_genes[indices[k,]]\n    }\n\n    ll <- list(\"feature_indices\"=indices,\n               \"abs_cor_features\"=cor_values)\n    return(ll)\n}\n",
+    "created" : 1478396802013.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1076029007",
+    "id" : "F4E4ABFF",
+    "lastKnownWriteTime" : 1478398427,
+    "last_content_update" : 1478398427,
+    "path" : "~/Desktop/CountClust/R/ExtractHighCorFeatures.R",
+    "project_path" : "R/ExtractHighCorFeatures.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

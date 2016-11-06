@@ -32,7 +32,6 @@
 #'
 #' data("ex.counts")
 #' out <- FitGoM(ex.counts, K=4, tol=100, control=list(tmax=100))
-#'
 #' @importFrom maptpx topics
 #' @import slam
 #' @importFrom utils modifyList
@@ -46,6 +45,7 @@ FitGoM <- function(data,
                    control=list())
 {
     ## dealing with blank rows: we first remove them
+
 
     control.default <- list(shape=NULL, initopics=NULL, bf=TRUE,
                             kill=2, ord=TRUE, verb=1, tmax=1000)

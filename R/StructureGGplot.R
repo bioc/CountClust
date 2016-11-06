@@ -54,6 +54,11 @@
 #' annotation <- data.frame(
 #'   sample_id = paste0("X", c(1:NROW(omega))),
 #'   tissue_label = factor(rownames(omega),
+#'
+#' # make annotation matrix
+#' annotation <- data.frame(
+#' sample_id = paste0("X", c(1:NROW(omega))),
+#' tissue_label = factor(rownames(omega),
 #'                      levels = rev( c("zy", "early2cell",
 #'                                      "mid2cell", "late2cell",
 #'                                      "4cell", "8cell", "16cell",
@@ -61,9 +66,7 @@
 #'                                      "lateblast") ) ) )
 #' head(annotation)
 #'
-#' # setw rownames of omega to be sample ID
-#' rownames(omega) <- annotation$sample_id
-#'
+#' rownames(omega) <- annotation$sample_id;
 #' StructureGGplot(omega = omega,
 #'                  annotation = annotation,
 #'                  palette = RColorBrewer::brewer.pal(8, "Accent"),
@@ -122,7 +125,7 @@
 #'                                   axis_label_face = "bold"))
 #'
 #' @import ggplot2
-#' @importFrom cowplot ggdraw panel_border switch_axis_position plot_grid
+#' @importFrom cowplot ggdraw panel_border plot_grid
 #' @import plyr
 #' @import reshape2
 #' @export
@@ -152,7 +155,6 @@ StructureGGplot <- function(omega, annotation = NULL,
     if(length(unique(rownames(omega))) != NROW(omega)) {
         stop("omega rownames are not unique!")
     }
-
     # check the annotation data.frame
     if (is.null(annotation)) null_annotation <- TRUE
     if (!is.null(annotation)) null_annotation <- FALSE
@@ -176,7 +178,6 @@ StructureGGplot <- function(omega, annotation = NULL,
                       lapply(1:nlevels(annotation$tissue_label), function(ii) {
                           temp_label <- levels(annotation$tissue_label)[ii]
                           temp_df <- omega[which(annotation$tissue_label == temp_label), ]
-
                           is_single_sample <-
                                   ( length(temp_df) == nlevels(annotation$tissue_label)|
                                            is.null(dim(temp_df)) )
@@ -186,7 +187,6 @@ StructureGGplot <- function(omega, annotation = NULL,
                           } else {
                               each_sample_order <- apply(temp_df, 1, which.max)
                           }
-
                           # find the dominant cluster across samples
                           sample_order <- as.numeric(attr(table(each_sample_order), "name")[1])
 
@@ -340,11 +340,4 @@ StructureGGplot <- function(omega, annotation = NULL,
       b
 
     }
-
-    # if (!plot_labels) {
-    #     b
-    # } else {
-    #     b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
-    #     b
-    # }
 }

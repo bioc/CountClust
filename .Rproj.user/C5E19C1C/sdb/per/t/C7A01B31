@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#' @title Run Grade of Membership (GoM) model with multiple starting points !\n#'\n#' @description Fits grade of membership model \\code{FitGoM()} to count data\n#'        with multiple starting points and choose the best fit using BIC (Bayesian\n#'        Information Criterion). the multiple starting points ensure that\n#'        the output is more reliable.\n#'\n#' @param data counts data \\eqn{N x G}, with \\eqn{N}, the number of samples\n#'       along the rows and \\eqn{G}, number of genes along columns.\n#' @param K the vector of clusters or topics to be fitted. Must be an integer,\n#'       unlike in ]\\code{FitGom()}. So you need to apply this function separately\n#'       for each K.\n#' @param tol Tolerance value for GoM model absolute log posterior increase\n#'            at successive iterations (set to 0.1 as default).\n#' @param burn_trials The number of trials with different starting points used.\n#' @param path_rda The directory path for saving the GoM model output.\n#'                  If NULL, it will return the output to console.\n#' @param control Control parameters. Same as topics() function of\n#'                 maptpx package.\n#'\n#' @return Outputs the best GoM model fit output for cluster K and saves it\n#'         at the directory path in path_rda if the latter is provided.\n#'\n#' @references Matt Taddy. On Estimation and Selection for Topic Models.\n#'                AISTATS 2012, JMLR W\\&CP 22.\n#'\n#'            Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly.\n#'                Inference of population structure using multilocus genotype\n#'                data. Genetics 155.2 (2000): 945-959.\n#'\n#' @keywords counts data, clustering, Structure plot\n#'\n#'\n#' @examples\n#'\n#' data(\"ex.counts\")\n#' out <- FitGoMpool(ex.counts, K=2, tol=100, burn_trials=3,\n#'                    control=list(tmax=100))\n#'\n#' @importFrom maptpx topics\n#' @import slam\n#' @importFrom utils modifyList\n#' @export\n#'\n\nFitGoMpool <- function(data,\n                   K,\n                   tol=0.1,\n                   burn_trials = 10,\n                   path_rda = NULL,\n                   control=list())\n{\n  if(length(K) > 1)\n    stop(\"For FitGoMpool, K must be an integer, run for separate K\")\n\n  out <- list()\n\n  for(num in 1:burn_trials){\n    out[[num]] <- FitGoM(data, K=K, tol=tol)\n  }\n\n  BIC_val <- array(0, burn_trials)\n  for(n in 1:length(BIC_val)){\n    BIC_val [n] <- compGoM(data, out[[n]])[,1]$BIC\n  }\n\n  Topic_clus <- out[[which.min(BIC_val)]][[1]]\n\n  if(!is.null(path_rda)){\n    save(Topic_clus, file = path_rda);\n    ll <- list(\"topic_fit\"=Topic_clus,\n               \"BIC\"=BIC_val[which.min(BIC_val)])\n    return(ll)\n  }else{\n      ll <- list(\"topic_fit\"=Topic_clus,\n                 \"BIC\"=BIC_val[which.min(BIC_val)])\n      return(ll)\n  }\n}\n\n",
+    "created" : 1478398914326.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3184309935",
+    "id" : "C7A01B31",
+    "lastKnownWriteTime" : 1478398752,
+    "last_content_update" : 1478398752,
+    "path" : "~/Desktop/CountClust/R/FitGoMpool.R",
+    "project_path" : "R/FitGoMpool.R",
+    "properties" : {
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
