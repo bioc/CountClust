@@ -32,8 +32,9 @@ install_github('TaddyLab/maptpx')
 Then one can install `CountClust` from Bioc as follows 
 
 ```
-source("http://bioconductor.org/biocLite.R")
-biocLite("CountClust")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("CountClust")
 ```
 
 For installing the working version of this package from Github please run
